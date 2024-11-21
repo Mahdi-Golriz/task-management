@@ -8,14 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import mongoose from "mongoose";
+// use mongoose to connect to MongoBD database
 export const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const conn = yield mongoose.connect(process.env.MONGO_URL);
-        // console.log("process.env.MONGO_URL", process.env.MONGO_URL);
+        const conn = yield mongoose.connect(process.env.MONGO_URL); // connection URL from env
         console.log(`MongoDN Connected: ${conn.connection.host}`);
     }
     catch (error) {
         console.log(error);
-        process.exit(1);
+        process.exit(1); // Exit the process when connection failed
     }
 });

@@ -6,27 +6,27 @@ import { Request, Response } from "express";
 // @route   POST /api/category
 // @access  Private
 export const createCategory = expressAsyncHandler(
+  //  use expressAsyncHandler to simplify async route handling and error management
   async (req: Request, res: Response): Promise<void> => {
-    const { title } = req.body;
+    const { title } = req.body; // get the title of category by body of request
 
     if (!title) {
       res.status(400);
       throw new Error("Title is required");
     }
 
-    // try {
-    //   const existingCategory = await Category.findOne({ title });
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    // check for repetitive category and prevent from create it
+    try {
+      const existingCategory = await Category.findOne({ title }); // Query the database for an existing category
+      if (existingCategory) {
+        res.status(400);
+        throw new Error("Category with this title already exists");
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
-    // if (existingCategory) {
-    //   res.status(400);
-    //   throw new Error("Category with this title already exists");
-    // }
-    console.log(title);
-
-    const category = await Category.create({ title });
+    const category = await Category.create({ title }); // Create a new category document in the database
     console.log(category);
     res.status(201).json(category);
   }
@@ -37,7 +37,7 @@ export const createCategory = expressAsyncHandler(
 // @access  Private
 export const getCategories = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const categories: ICategory[] = await Category.find().sort({ title: 1 });
+    const categories: ICategory[] = await Category.find().sort({ title: 1 }); // sort tasks alphabetically by title
     res.status(200).json(categories);
   }
 );

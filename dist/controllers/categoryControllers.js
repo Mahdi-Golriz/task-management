@@ -12,23 +12,26 @@ import Category from "../models/categoryModel.js";
 // @desc    Create category
 // @route   POST /api/category
 // @access  Private
-export const createCategory = expressAsyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title } = req.body;
+export const createCategory = expressAsyncHandler(
+//  use expressAsyncHandler to simplify async route handling and error management
+(req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { title } = req.body; // get the title of category by body of request
     if (!title) {
         res.status(400);
         throw new Error("Title is required");
     }
-    // try {
-    //   const existingCategory = await Category.findOne({ title });
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    // if (existingCategory) {
-    //   res.status(400);
-    //   throw new Error("Category with this title already exists");
-    // }
-    console.log(title);
-    const category = yield Category.create({ title });
+    // check for repetitive category and prevent from create it
+    try {
+        const existingCategory = yield Category.findOne({ title }); // Query the database for an existing category
+        if (existingCategory) {
+            res.status(400);
+            throw new Error("Category with this title already exists");
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+    const category = yield Category.create({ title }); // Create a new category document in the database
     console.log(category);
     res.status(201).json(category);
 }));
@@ -36,6 +39,6 @@ export const createCategory = expressAsyncHandler((req, res) => __awaiter(void 0
 // @route   GET /api/category
 // @access  Private
 export const getCategories = expressAsyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const categories = yield Category.find().sort({ title: 1 });
+    const categories = yield Category.find().sort({ title: 1 }); // sort tasks alphabetically by title
     res.status(200).json(categories);
 }));

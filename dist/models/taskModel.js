@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+// Define the Mongoose schema for the `Task` collection
 const taskSchema = new Schema({
     title: {
         type: String,
@@ -15,7 +16,7 @@ const taskSchema = new Schema({
         type: Date,
         validate: {
             validator: function (value) {
-                return value >= new Date();
+                return value >= new Date(); // Ensures due date is not in the past
             },
             message: "Due date cannot be in the past",
         },
@@ -23,10 +24,10 @@ const taskSchema = new Schema({
     status: {
         type: String,
         enum: ["Done", "Planned", "Pending"],
-        default: "Pending",
+        default: "Planned",
     },
     category_id: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Reference to the category document
         ref: "Category",
         required: true,
     },
@@ -36,7 +37,7 @@ const taskSchema = new Schema({
     },
 });
 // Add index for better query performance
-taskSchema.index({ category_id: 1 });
-taskSchema.index({ status: 1 });
+taskSchema.index({ category_id: 1 }); // Indexing category_id to optimize queries involving category-based filtering
+taskSchema.index({ status: 1 }); // Indexing status for optimized filtering by task status
 const Task = mongoose.model("Task", taskSchema);
 export default Task;

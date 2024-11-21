@@ -1,14 +1,17 @@
 import mongoose, { Document, Schema, Model, ObjectId } from "mongoose";
 
+// Define the structure of a Task document using a TypeScript interface
+// `ITask` extends `Document`, representing a MongoDB document in Mongoose
 interface ITask extends Document {
   title: string;
   description?: string;
   dueDate: Date;
-  status: "Done" | "Planed" | "Pending";
+  status: "Done" | "Planned" | "Pending";
   category_id: ObjectId;
   createdAt: Date;
 }
 
+// Define the Mongoose schema for the `Task` collection
 const taskSchema: Schema<ITask> = new Schema({
   title: {
     type: String,
@@ -25,7 +28,7 @@ const taskSchema: Schema<ITask> = new Schema({
     type: Date,
     validate: {
       validator: function (value: Date) {
-        return value >= new Date();
+        return value >= new Date(); // Ensures due date is not in the past
       },
       message: "Due date cannot be in the past",
     },
@@ -33,10 +36,10 @@ const taskSchema: Schema<ITask> = new Schema({
   status: {
     type: String,
     enum: ["Done", "Planned", "Pending"],
-    default: "Pending",
+    default: "Planned",
   },
   category_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId, // Reference to the category document
     ref: "Category",
     required: true,
   },
@@ -47,8 +50,8 @@ const taskSchema: Schema<ITask> = new Schema({
 });
 
 // Add index for better query performance
-taskSchema.index({ category_id: 1 });
-taskSchema.index({ status: 1 });
+taskSchema.index({ category_id: 1 }); // Indexing category_id to optimize queries involving category-based filtering
+taskSchema.index({ status: 1 }); // Indexing status for optimized filtering by task status
 
 const Task: Model<ITask> = mongoose.model<ITask>("Task", taskSchema);
 export default Task;
