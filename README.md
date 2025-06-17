@@ -77,7 +77,7 @@ Make sure Docker is running. Then:
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/Mahdi-Golriz/task-management-backend.git
+   git clone https://github.com/Mahdi-Golriz/task-management.git
    ```
 2. Install NPM packages
    ```sh
