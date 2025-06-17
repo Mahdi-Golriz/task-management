@@ -10,7 +10,7 @@ This is the backend for the Task Management App built using **Node.js**, **Expre
   <p align="center">
     An awesome elementary backend task!
   </p>
-  <img alt="demo" src='./images/Demo.gif' />
+  <img alt="demo" src='./images/demo.gif' />
 </div>
 
 <!-- TABLE OF CONTENTS -->
