@@ -52,12 +52,10 @@ Through this project, I gained real-world backend development experience, includ
 
 ### Built With
 
-- ![Node.js][Node.js]
-- ![Express.js][Express.js]
-- ![MongoDB][MongoDB]
-- ![TypeScript][TypeScript]
-- ![Docker][Docker]
-- ![Postman][Postman]
+- ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
+- ![Express](https://img.shields.io/badge/Express.js-000000?style=flat&logo=express&logoColor=white)
+- ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat&logo=mongodb&logoColor=white)
+- ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
