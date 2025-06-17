@@ -84,13 +84,13 @@ Make sure Docker is running. Then:
    npm install
    ```
 3. Build the project
-  ```sh
-  tsc
-  ```
+   ```sh
+    tsc
+   ```
 4. Run in developement
-  ```sh
-  npm run dev
-  ```
+   ```sh
+    npm run dev
+   ```
 
 🔐 Environment Variables
 Create a .env file in the root:
