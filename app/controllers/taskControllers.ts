@@ -42,10 +42,10 @@ export const getTasks = expressAsyncHandler(
     // sort process
     let sortOption: { [key: string]: 1 | -1 } = {};
     switch (sort) {
-      case "sortedBydueDate":
+      case "sortedByDueDate":
         sortOption = { dueDate: 1 }; // Sort by dueDate ascending
         break;
-      case "sortedBycreationDate":
+      case "sortedByCreationDate":
         sortOption = { createdAt: 1 }; // Sort by createdAt ascending
         break;
       default:
@@ -107,7 +107,7 @@ export const createTask = expressAsyncHandler(
 // @access  Private
 export const updateTask = expressAsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    // update method takes the taskId and new task infomations
+    // update method takes the taskId and new task information
     const task: ITask | null = await Task.findById(req.params.id);
 
     if (!task) {
@@ -167,7 +167,6 @@ export const getTaskCounts = expressAsyncHandler(
 
       // Build the result object
       const counts: Record<string, number> = {
-        total: totalTasks,
         planned: 0,
         pending: 0,
         done: 0,
@@ -180,7 +179,22 @@ export const getTaskCounts = expressAsyncHandler(
         if (statusCount._id === "Done") counts.done = statusCount.count;
       });
 
-      res.status(200).json(counts);
+      const donePercentage =
+        Math.round((counts.done / totalTasks) * 100) || "Zero";
+      const pendingPercentage =
+        Math.round((counts.pending / totalTasks) * 100) || "Zero";
+      const plannedPercentage =
+        Math.round((counts.planned / totalTasks) * 100) || "Zero";
+
+      // Build the final results
+      const stats: Record<string, number | string> = {
+        totalTasks,
+        donePercentage,
+        pendingPercentage,
+        plannedPercentage,
+      };
+
+      res.status(200).json(stats);
     } catch (error) {
       res.status(500).json({ error: "Failed to get task counts" });
     }

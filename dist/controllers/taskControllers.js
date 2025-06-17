@@ -38,10 +38,10 @@ export const getTasks = expressAsyncHandler((req, res) => __awaiter(void 0, void
     // sort process
     let sortOption = {};
     switch (sort) {
-        case "sortedBydueDate":
+        case "sortedByDueDate":
             sortOption = { dueDate: 1 }; // Sort by dueDate ascending
             break;
-        case "sortedBycreationDate":
+        case "sortedByCreationDate":
             sortOption = { createdAt: 1 }; // Sort by createdAt ascending
             break;
         default:
@@ -86,7 +86,7 @@ export const createTask = expressAsyncHandler((req, res) => __awaiter(void 0, vo
 // @route   PUT /api/task/:id
 // @access  Private
 export const updateTask = expressAsyncHandler((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // update method takes the taskId and new task infomations
+    // update method takes the taskId and new task information
     const task = yield Task.findById(req.params.id);
     if (!task) {
         res.status(400);
@@ -128,7 +128,6 @@ export const getTaskCounts = expressAsyncHandler((req, res) => __awaiter(void 0,
         ]);
         // Build the result object
         const counts = {
-            total: totalTasks,
             planned: 0,
             pending: 0,
             done: 0,
@@ -142,7 +141,17 @@ export const getTaskCounts = expressAsyncHandler((req, res) => __awaiter(void 0,
             if (statusCount._id === "Done")
                 counts.done = statusCount.count;
         });
-        res.status(200).json(counts);
+        const donePercentage = Math.round((counts.done / totalTasks) * 100) || "Zero";
+        const pendingPercentage = Math.round((counts.pending / totalTasks) * 100) || "Zero";
+        const plannedPercentage = Math.round((counts.planned / totalTasks) * 100) || "Zero";
+        // Build the final results
+        const stats = {
+            totalTasks,
+            donePercentage,
+            pendingPercentage,
+            plannedPercentage,
+        };
+        res.status(200).json(stats);
     }
     catch (error) {
         res.status(500).json({ error: "Failed to get task counts" });

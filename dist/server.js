@@ -11,7 +11,7 @@ connectDB(); // connect the web server to database
 const app = express(); // create a web server
 // Configure cross-origin requests to allow requests from the origin (host of frontend app) with specific methods and headers
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:8787",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
